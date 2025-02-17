@@ -1,0 +1,20 @@
+Meteo per la zona nord
+Mi dici le previsioni per l'area sud?
+Che tempo fa nell'entroterra?
+Previsioni per la regione
+Come sarà il clima costiero?
+Mi serve sapere il meteo regionale
+Che condizioni per l'area montana?
+Previsioni per la zona collinare
+Come evolve il meteo territoriale?
+Mi dici il clima per la provincia?
+Meteo per l'area metropolitana
+Previsioni per il distretto
+Come sarà il tempo nella mia zona?
+Mi serve sapere il meteo locale
+Che condizioni per il mio territorio?
+Previsioni per l'area limitrofa
+Come evolve il clima qui?
+Mi dici il meteo per la mia regione?
+Che tempo fa nel mio circondario?
+Previsioni per la mia zona

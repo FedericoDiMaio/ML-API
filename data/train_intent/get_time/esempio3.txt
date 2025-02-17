@@ -1,0 +1,20 @@
+Mi indichi l'ora attuale?
+Che ore sono nel tuo fuso orario?
+Mi puoi aggiornare sull'ora?
+Che orario abbiamo in questo momento?
+Mi diresti che ore sono a Sydney?
+Qual è l'ora locale a Bangkok?
+Che ore sono ad Amsterdam?
+Mi dici l'orario di Vancouver?
+Che ore segnano a Rio de Janeiro?
+Qual è l'ora del meridiano zero?
+Mi puoi indicare l'ora di Seoul?
+Che ore sono nelle Filippine?
+Mi dai l'orario di Mumbai?
+Che ore sono a Vienna?
+Mi serve l'ora di Toronto
+Che orario c'è a Istanbul?
+Mi dici che ore sono a Chicago?
+Che ore segna Auckland?
+Mi indichi l'ora di Città del Messico?
+Che orario è a Copenhagen?

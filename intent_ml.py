@@ -34,8 +34,9 @@ raw_val_ds = tf.keras.utils.text_dataset_from_directory(
 train_texts = []
 train_labels = []
 
+#decodifica dei testi
 for text_batch, label_batch in raw_train_ds:
-    decoded_texts = [text.numpy().decode('utf-8') for text in text_batch]  #decodifica dei testi
+    decoded_texts = [text.numpy().decode('utf-8') for text in text_batch]
     train_texts.extend(decoded_texts)
     train_labels.extend(label_batch.numpy())
 
@@ -44,16 +45,15 @@ val_labels = []
 
 for text_batch, label_batch in raw_val_ds:
     decoded_texts = [text.numpy().decode('utf-8') for text in text_batch]
-    #logger.info(f"Decoded texts: {decoded_texts}")
     val_texts.extend(decoded_texts)
-    #logger.info(f"Val texts: {val_texts}")
     val_labels.extend(label_batch.numpy())
-    #logger.info(f"Val labels: {val_labels}")
 
+#vettorizzazione
 vectorizer = TfidfVectorizer(max_features=100, ngram_range=(1, 2))
 X_train = vectorizer.fit_transform(train_texts)
 X_val = vectorizer.transform(val_texts)
 
+#modello
 model = LogisticRegression(max_iter=500)
 model.fit(X_train, train_labels)
 predictions = model.predict(X_val)

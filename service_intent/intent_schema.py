@@ -3,12 +3,6 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class SimilarExample(BaseModel):
-    text: str
-    intent: str
-    similarity: float
-
-
 class PredictionResponse(BaseModel):
     # predicted_intent: str
     # confidence: float

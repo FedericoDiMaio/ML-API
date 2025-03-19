@@ -12,7 +12,3 @@ class Singleton:
             cls._instances[class_type] = class_type(*args, **kwargs)
         return cls._instances[class_type]
 
-    @classmethod
-    def clear_instance(cls, class_type: Type[T]) -> None:
-        if class_type in cls._instances:
-            del cls._instances[class_type]

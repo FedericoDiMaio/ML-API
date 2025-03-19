@@ -12,7 +12,7 @@ app = FastAPI(title="ML - API")
 @app.post("/predict", response_model=PredictionResponse)
 async def predict_intent(request: PredictionRequest):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    dataset_dir = os.path.join(current_dir, "data")
+    dataset_dir = os.path.join(current_dir, "data1")
     train_dir = os.path.join(dataset_dir, "train_intent")
 
     try:
@@ -20,9 +20,9 @@ async def predict_intent(request: PredictionRequest):
         result = classifier.predict(request.text)
 
         intent_to_api = {
-            "get_weather": "/api/weather",
-            "get_time": "/api/time",
-            "get_news": "/api/news",
+            "getAuleLibereUtente": "/Aule/getAuleLibereUtente",
+            "getImpegniByDocente": "/Impegni/getImpegniByDocente",
+            "orarioLezioniDocente": "/Impegni/orarioLezioniDocente",
         }
 
         result['api_endpoint'] = intent_to_api.get(result['predicted_intent'], "unknown")

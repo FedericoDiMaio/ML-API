@@ -14,6 +14,3 @@ def get_classifier(train_dir: str) -> IntentClassifier:
 
     return classifier
 
-
-def reset_classifier() -> None:
-    Singleton.clear_instance(IntentClassifier)

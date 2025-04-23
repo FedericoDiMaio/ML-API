@@ -2,33 +2,63 @@ import os
 
 import uvicorn
 from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+from typing import Dict, Any, List
+from logger import logger
+from service_intent.intent_ml import IntentClassifier
+from service_intent.singleton import Singleton
 
-from service_intent.intent_manager import get_classifier
-from service_intent.intent_schema import PredictionResponse, PredictionRequest
-
-app = FastAPI(title="ML - API")
+app = FastAPI()
 
 
-@app.post("/predict", response_model=PredictionResponse)
+class PredictionRequest(BaseModel):
+    text: str
+
+
+class PredictionResponse(BaseModel):
+    predicted_intent: str
+    confidence: float
+    risposta: str
+    domanda_simile: str
+    variabili_coinvolte: List[str] = []
+    api_endpoint: str = "unknown"
+
+
+def get_classifier(json_file_path: str) -> IntentClassifier:
+    classifier = Singleton.get_instance(IntentClassifier, json_file_path)
+
+    if not classifier.is_trained:
+        logger.info("first API call: Loading and training the model...")
+        classifier.load_data()
+        classifier.train()
+        logger.info("Model training completed!")
+
+    return classifier
+
+
+@app.post("/predict/ibm", response_model=PredictionResponse)
 async def predict_intent(request: PredictionRequest):
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    dataset_dir = os.path.join(current_dir, "data1")
-    train_dir = os.path.join(dataset_dir, "train_intent")
+    json_file_path = os.path.join(current_dir, "data", "flussi.json")
 
     try:
-        classifier = get_classifier(train_dir)
+        classifier = get_classifier(json_file_path)
         result = classifier.predict(request.text)
 
-        intent_to_api = {
-            "getAuleLibereUtente": "/Aule/getAuleLibereUtente",
-            "getImpegniByDocente": "/Impegni/getImpegniByDocente",
-            "orarioLezioniDocente": "/Impegni/orarioLezioniDocente",
-        }
+        # Creare una risposta valida secondo il modello PredictionResponse
+        response = PredictionResponse(
+            predicted_intent=result['predicted_intent'] or "",  # Evita None
+            confidence=result['confidence'],
+            risposta=result['risposta'] or "",  # Evita None
+            domanda_simile=result['domanda_simile'] or "",  # Evita None
+            variabili_coinvolte=result['variabili_coinvolte'],
+            api_endpoint="ibm"
+        )
 
-        result['api_endpoint'] = intent_to_api.get(result['predicted_intent'], "unknown")
+        return response  # Restituisci la risposta
 
-        return result
     except Exception as e:
+        logger.error(f"Errore durante la predizione: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
 

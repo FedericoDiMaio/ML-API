@@ -32,6 +32,29 @@ async def predict_intent(request: PredictionRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/predict/ibm", response_model=PredictionResponse)
+async def predict_intent(request: PredictionRequest):
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    dataset_dir = os.path.join(current_dir, "data")
+    train_dir = os.path.join(dataset_dir, "data_ibm")
+
+    try:
+        classifier = get_classifier(train_dir)
+        result = classifier.predict(request.text)
+
+        intent_to_api = {
+            "altriArgomenti": "intent_altri_argomenti",
+            "spidinfo": "@intent_spid_info",
+            "tassedapagare": "intent_tasse_da_pagare",
+        }
+
+        result['api_endpoint'] = intent_to_api.get(result['predicted_intent'], "unknown")
+
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 if __name__ == "__main__":
     uvicorn.run(
         app,
